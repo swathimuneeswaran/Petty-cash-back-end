@@ -90,7 +90,7 @@ exports.forgotPassword =  async (req, res) => {
       from: "swathirajan255@gmail.com",
       to: email,
       subject: "Reset Password",
-      text: `http://localhost:5173/reset-password/${token}`,
+      text: `https://pettycash-managing-app.netlify.app/reset-password/${token}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
