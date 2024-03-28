@@ -25,6 +25,11 @@ app.use(cors({
 }));
 app.use(cookieParser())
 
+
+app.get("/",async(req,res)=>
+{
+    res.send("hello,this is endpoint for pettycash")
+})
 //routes
 readdirSync('./routes').map((route) => app.use('/api/manager', require('./routes/' + route)))
 
