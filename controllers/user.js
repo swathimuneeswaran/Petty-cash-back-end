@@ -33,36 +33,44 @@ exports.addUser = async (req, res) => {
 };
 
 exports.signIn = async (req, res) => {
-  const { email, password } = req.body;
-  console.log(email)
-  let user = await User.findOne({ email });
-  console.log(user)
-  // res.localStorage.setItem(user)
-  if (!user) {
-    return res.status(400).send({
-      message: "User Does Not Exists",
-    });
-  }
+  try {
+    const { email, password } = req.body;
 
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) {
-    return res.status(400).send({
-      message: "Incorrect Password",
-    });
-  }
+    // Check if the email exists in the database
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "User Does Not Exist" });
+    }
 
-  const token = jwt.sign({ firstname: user.firstname }, process.env.KEY, {
-    expiresIn: "5hr",
-  });
-  res.cookie("token", token, { httpOnly: true, maxAge: 360000});
-  return res.json({
-    _id:user?._id,
-    firstname: user.firstname,
-    lastname: user.lastname,
-    email: user.email,
-    token: token,
-  })
+    // Verify the password
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({ message: "Incorrect Password" });
+    }
+
+    // Generate a JWT token
+    const token = jwt.sign({ firstname: user.firstname }, process.env.KEY, {
+      expiresIn: "5hr",
+    });
+
+    // Set the token in a cookie with secure and HTTPOnly flags
+    res.cookie("token", token, { httpOnly: true, maxAge: 360000, secure: true });
+
+    // Return the user's information and the token
+    return res.json({
+      _id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      token: token,
+    });
+  } catch (error) {
+    // Handle any errors
+    console.error("Error signing in:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 };
+
 
 exports.forgotPassword =  async (req, res) => {
   const { email } = req.body;
