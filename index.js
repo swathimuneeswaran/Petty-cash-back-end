@@ -3,6 +3,9 @@ const cors = require('cors');
 const { createConnection } = require('./db/database');
 // const cookieParser=require('cookie-parser');
 const {readdirSync} = require('fs')
+const cookieParser = require('cookie-parser');
+
+
 const app = express()
 
 require('dotenv').config()
@@ -15,7 +18,7 @@ app.use(cors({
     origin:  ["http://localhost:5173","https://pettycash-managing-app.netlify.app"],  
     credentials: true
 }));
-// app.use(cookieParser())
+app.use(cookieParser())
 
 
 app.get("/",async(req,res)=>
