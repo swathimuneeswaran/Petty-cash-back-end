@@ -12,15 +12,7 @@ const PORT = process.env.PORT
 //middlewares
 app.use(express.json())
 app.use(cors({
-    origin: function(origin, callback) {
-        // Check if the request origin is allowed
-        const allowedOrigins = ["http://localhost:5173","https://pettycash-managing-app.netlify.app"];
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
+    origin:  ["http://localhost:5173","https://pettycash-managing-app.netlify.app"],  
     credentials: true
 }));
 app.use(cookieParser())
