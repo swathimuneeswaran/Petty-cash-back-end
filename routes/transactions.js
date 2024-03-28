@@ -2,10 +2,10 @@ const { addExpense, getExpense, deleteExpense } = require('../controllers/expens
 const { addIncome, getIncomes, deleteIncome } = require('../controllers/income');
 const {resetPassword,forgotPassword,signIn,addUser,getAllUsers}=require('../controllers/user');
 const router = require('express').Router();
-const {verifyUser}=require("../controllers/verify")
+const verifyUser=require("../controllers/verify")
 
 
-router.post('/add-income',verifyUser, addIncome)
+router.post('/add-income',verifyUser,addIncome)
 router.get('/get-incomes/:email',verifyUser, getIncomes)
 router.delete('/delete-income/:id', verifyUser,deleteIncome)
 router.post('/add-expense',verifyUser, addExpense)
