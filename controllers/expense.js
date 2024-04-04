@@ -33,7 +33,7 @@ exports.addExpense = async (req, res) => {
 
 exports.getExpense = async (req, res) =>{
     const { id } = req.params;
-    console.log(id);
+    // console.log(id);
     // const user = await User.find({ email });
     try {
         // Find all incomes associated with the user ID

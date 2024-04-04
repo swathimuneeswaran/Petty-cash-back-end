@@ -32,7 +32,7 @@ readdirSync('./routes').map((route) => app.use('/api/manager', require('./routes
 const server =async () => {
     await createConnection()
      app.listen(PORT, () => {
-        console.log('listening to port:', PORT)
+        console.log('listening to port');
     })
 }
 
