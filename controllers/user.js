@@ -54,8 +54,8 @@ exports.signIn = async (req, res) => {
     });
 
     // Set the token in a cookie with secure and HTTPOnly flags
-    res.cookie("token", token, { httpOnly: true, maxAge: 360000, secure: true });
-    res.cookie("userEmail", email, { maxAge: 360000, secure: true });
+    res.cookie("token", token, { httpOnly: true, maxAge: 360000, secure: true,sameSite:"none" });
+    res.cookie("userEmail", email, { maxAge: 360000, secure: true,httpOnly: true,sameSite:"none" });
 
     // Return the user's information and the token
     return res.json({
