@@ -22,7 +22,7 @@ exports.addIncome = async (req, res) => {
     });
 
         await income.save();
-        console.log(income)
+        // console.log(income)
         res.status(200).json({ message: 'Income Added' ,income});
     } catch (error) {
         console.error(error);
@@ -32,14 +32,14 @@ exports.addIncome = async (req, res) => {
 
 
 exports.getIncomes = async (req, res) => {
-    const { email } = req.params;
-    console.log(email);
+    const { id } = req.params;
+    // console.log(email);
     // const user = await User.find({ email });
     try {
         // Find all incomes associated with the user ID
-        const user = await IncomeSchema.find({ email });
+        const user = await IncomeSchema.find({ user:id });
         // const incomes = await IncomeSchema.find({ user: id }).populate("user");
-        console.log(user);
+        // console.log(user);
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });

@@ -6,10 +6,10 @@ const router = require('express').Router();
 
 
 router.post('/add-income',addIncome)
-router.get('/get-incomes/:email', getIncomes)
+router.get('/get-incomes/:id', getIncomes)
 router.delete('/delete-income/:id', deleteIncome)
 router.post('/add-expense', addExpense)
-router.get('/get-expenses/:email',getExpense)
+router.get('/get-expenses/:id',getExpense)
 router.delete('/delete-expense/:id',deleteExpense)
 router.post("/signup",addUser);
 router.post("/login",signIn);
