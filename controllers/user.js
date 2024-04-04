@@ -54,8 +54,15 @@ exports.signIn = async (req, res) => {
     });
 
     // Set the token in a cookie with secure and HTTPOnly flags
-    res.cookie("token", token, { httpOnly: true, maxAge: 360000, secure: process.env.NODE_ENV === "production",sameSite:"none" });
-    res.cookie("userEmail", email, { maxAge: 360000, secure: true,httpOnly: true,sameSite:"none" });
+    const cookieOptions = {
+      httpOnly: true,
+      maxAge: 360000, // 360000 milliseconds = 6 minutes
+      secure: req.secure || req.headers['x-forwarded-proto'] === 'https', // Check if request is secure (for production)
+      sameSite: 'none', // Adjust according to your requirements
+    };
+
+    res.cookie("token", token, cookieOptions);
+    res.cookie("userEmail", email, cookieOptions);
 
     // Return the user's information and the token
     return res.json({
@@ -71,6 +78,7 @@ exports.signIn = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 exports.forgotPassword =  async (req, res) => {
