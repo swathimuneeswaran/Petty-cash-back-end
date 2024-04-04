@@ -53,17 +53,6 @@ exports.signIn = async (req, res) => {
       expiresIn: "5hr",
     });
 
-    // Set the token in a cookie with secure and HTTPOnly flags
-    const cookieOptions = {
-      httpOnly: true,
-      maxAge: 360000, // 360000 milliseconds = 6 minutes
-      secure: req.secure || req.headers['x-forwarded-proto'] === 'https', // Check if request is secure (for production)
-      sameSite: 'none', // Adjust according to your requirements
-    };
-
-    res.cookie("token", token, cookieOptions);
-    res.cookie("userEmail", email, cookieOptions);
-
     // Return the user's information and the token
     return res.json({
       _id: user._id,
@@ -78,6 +67,7 @@ exports.signIn = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 
