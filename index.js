@@ -1,39 +1,32 @@
-const express = require('express')
-const cors = require('cors');
-const { createConnection } = require('./db/database');
-// const cookieParser=require('cookie-parser');
-const {readdirSync} = require('fs')
+const express = require('express');
+const path = require('path');
+const transactRoutes = require("./routes/transactions.js");
+const { createConnection } = require('./db/database.js');
 const cookieParser = require('cookie-parser');
 
+const app = express();
 
-const app = express()
+require('dotenv').config();
 
-require('dotenv').config()
+const PORT = process.env.PORT;
 
-const PORT = process.env.PORT
+// const __dirname = path.resolve();
 
 //middlewares
-app.use(express.json())
-app.set("trust proxy", 1);
-app.use(cors({
-    origin:  ["http://localhost:5173","https://pettycash-managing-app.netlify.app"],  
-    credentials: true
-}));
-app.use(cookieParser())
+app.use(express.json());
+app.use(cookieParser());
+app.use("/api/manager", transactRoutes);
 
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 
-// app.get("/",async(req,res)=>
-// {
-//     res.send("hello,this is endpoint for pettycash")
-// })
-//routes
-readdirSync('./routes').map((route) => app.use('/api/manager', require('./routes/' + route)))
-
-const server =async () => {
-    await createConnection()
-     app.listen(PORT, () => {
+const server = async () => {
+    await createConnection();
+    app.listen(PORT, () => {
         console.log('listening to port');
-    })
-}
+    });  
+};
 
-server()
+server();
